@@ -71,7 +71,7 @@ void csshistoBar(vector<string> range, vector<int> freq, vector<string> var, int
 void divHistoBar(vector<string> cssClassVar, vector<string> markRange, vector<int> weight, ofstream& dataOut){
 	for(int i = 0; i < 10; i++){
 		dataOut <<"\t<div class=\"container\">" 																										<< endl <<
-							"\t\t<p class=\"range\">" << markRange[i] << "</p>"		     										 	<< endl <<
+							"\t\t<p class=\"range\">" << markRange[i] << "</p>"		     										  	<< endl <<
 							"\t\t<div class=\"colorContainer\">" 												  										<< endl <<
 							"\t\t\t<div class=\"freq " << cssClassVar[i] << "\">" << weight[i] << "</div>" 	 	<< endl <<
 							"\t\t</div>"																																			<< endl <<
@@ -82,7 +82,7 @@ void divHistoBar(vector<string> cssClassVar, vector<string> markRange, vector<in
 void buildHistogram(string title, vector<string> range, vector<int> freq, vector<string> cssClassVar, int n, string starUnit, ofstream& dataOut){
 	dataOut <<"<!DOCTYPE html>"								  << endl <<
 						"<html lang=\"en\">"					  	<< endl <<
-						"<head>"												  <<	endl <<	
+						"<head>"												  << endl <<	
 						"\t<meta charset=\"UTF-8\" />"		<< endl <<
 						"\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />" << endl <<
 						"\t<style>"												<< endl << endl;
@@ -99,7 +99,7 @@ void buildHistogram(string title, vector<string> range, vector<int> freq, vector
 	vector<int> weight = outputWidth(freq, n);
 	divHistoBar(cssClassVar, range, weight, dataOut);
 
-	dataOut << "\t<p># Note that each (*) represents " << starUnit <<" units. </p>" << endl << endl << "</body>" << endl << "</html>" << endl;
+	dataOut << "\t<p># Note that each frequency in the histogram represents " << starUnit <<". </p>" << endl << endl << "</body>" << endl << "</html>" << endl;
 }
 
 void histogramHTML(string fileName, string title, vector<string> range, vector<int> freq, string starUnit, int n){

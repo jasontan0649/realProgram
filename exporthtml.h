@@ -8,10 +8,12 @@ using namespace std;
 
 //function to export HTML
 void exportHTML(string, string, vector<string>, vector<string>, vector<vector<double>>, string mode = "once");
+void exportHTML(string, string, vector<string>, vector<string>, vector<vector<string>>, string mode = "once");
+
 void titleHTML(string, ofstream&);
-void tableHTML(vector<string>, vector<string>, vector<vector<double>>, ofstream&);
+void tableHTML(vector<string>, vector<string>, vector<vector<string>>, ofstream&);
 void thTable(vector<string>, ofstream&);
-void tdTable(vector<vector<double>>, vector<string>, ofstream&);
+void tdTable(vector<vector<string>>, vector<string>, ofstream&);
 
 
 #endif

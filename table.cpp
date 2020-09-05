@@ -17,11 +17,13 @@ string getBorder(vector<string>);
 
 //function to export txt
 void exportTxt(string, string, vector<string>, vector<string>, vector<vector<double>>, string mode="new");
+void exportTxt(string, string, vector<string>, vector<string>, vector<vector<string>>, string mode="new");
 void printHeader(ofstream&, string, string);
 void printTableData(ofstream&, bool, int, vector<string>, vector<int>, vector<vector<string>>, string);
 
 //function to display Table
-void PrintTableByVect(string, vector<string>, vector<string>, vector<vector<double>>, vector<vector<string>> strData = {{"null"}});
+void PrintTableByVect(string, vector<string>, vector<string>, vector<vector<double>>);
+void PrintTableByVect(string, vector<string>, vector<string>, vector<vector<string>>);
 void printHeader(string, string);
 void printTableData(bool, int, vector<string>, vector<int>, vector<vector<string>>, string);
 
@@ -117,11 +119,15 @@ string getBorder(vector<string> header) {
 	//Join colBorder by "-+-"
 	return joinVect(colBorder, "-+-");
 }
-
 //function to export txt
-void exportTxt(string fileName, string title, vector<string> rowNames, vector<string> colNames, vector<vector<double>> data, string mode) {
 
-	vector<vector<string>> strData = convertDVectToSVect(data);
+void exportTxt(string fileName, string title, vector<string> rowNames, vector<string> colNames, vector<vector<double>> data, string mode) {
+  vector<vector<string>> strData = convertDVectToSVect(data);
+  exportTxt(fileName, title, rowNames, colNames, strData, mode);
+}
+
+void exportTxt(string fileName, string title, vector<string> rowNames, vector<string> colNames, vector<vector<string>> strData, string mode) {
+
 	vector<int> colMaxLen;
 	bool noRowNames = rowNames.size() == 0;
 	//Find the maximum length for row names
@@ -185,13 +191,14 @@ void printTableData(ofstream& dataOut, bool noRowNames, int rowMaxLen, vector<st
 		rowStr.clear(); //clear vector string
 	}
 }
+void PrintTableByVect(string title, vector<string> rowNames, vector<string> colNames, vector<vector<double>> data) {
+  vector<vector<string>> strData = convertDVectToSVect(data);
+  PrintTableByVect(title, rowNames, colNames, strData);
+}
 
 //function to display table
-void PrintTableByVect(string title, vector<string> rowNames, vector<string> colNames, vector<vector<double>> data, vector<vector<string>> strData) {
+void PrintTableByVect(string title, vector<string> rowNames, vector<string> colNames, vector<vector<string>> strData) {
 
-  if(strData[0][0] == "null")
-	  strData = convertDVectToSVect(data);
-  
 	vector<int> colMaxLen;
 	bool noRowNames = rowNames.size() == 0;
 	//Find the maximum length for row names

@@ -75,5 +75,5 @@ void plotHistogram(string title, vector<string> markRange, vector<int> freq, str
 	cout << "========== Histogram for " << title  << " ==========" << endl << endl;
 	cout << "# Note that each (*) represents " << starUnit << endl << endl;
 
-	PrintTableByVect(title, {}, {"Range", "Frequency"}, {}, transposeV({markRange, strStar}));
+	PrintTableByVect(title, {}, {"Range", "Frequency"}, transposeV({markRange, strStar}));
 }

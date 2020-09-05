@@ -67,10 +67,12 @@ void distinctMenu(vector<string>, vector<vector<double>>);
 
 //Generate Histogram
 void histogramMenu(vector<string>, vector<vector<double>>);
+void displayHisto(string, vector<string>, vector<int>, string, int, int);
 
 //data above and below mean
 void abvBlwMean(vector<string> , vector<double> , vector<vector<double>> );
 void showMeanTable(string , vector<double> , vector<double> );
+void displayTwoTable(string, vector<string> , vector<string>, vector<vector<double>>, vector<vector<double>>);
 
 //Pearson correlation 
 void pearsonMenu(vector<string>, vector<vector<double>>);
@@ -296,7 +298,7 @@ void displayData(string title, vector<string> row, vector<string> col, vector<ve
     case '4': return;
 	}
 
-}
+}  
 
 // still building==============================================
 void abvBlwMean(vector<string> title, vector<double> id, vector<vector<double>> data){
@@ -306,9 +308,31 @@ void abvBlwMean(vector<string> title, vector<double> id, vector<vector<double>> 
 	cout << endl << "The mean is " << mean(data[n]) << endl << endl; 
 
   showMeanTable(title[n], id, data[n]);
+}
 
- // displayData if switch change abit
- // create new function that prints 2 tables to txt & html
+void displayTwoTable(string title, vector<string> row, vector<string> col, vector<vector<double>> dataAbv, vector<vector<double>> dataBlw){
+	cout << "Would you like to :                " << endl << endl;
+	cout << "1. Export to HTML                  " << endl;
+	cout << "2. Export to text file             " << endl;
+	cout << "3. Export to to HTML and text file " << endl;
+	cout << "4. Continue                        " << endl << endl;
+
+	char c = getChoice('1', '4');
+	switch (c) 
+  {
+    case '1': exportHTML(title + " Mean.html", "Above", row, col, dataAbv, "new");
+							exportHTML(title + " Mean.html", "Below", row, col, dataBlw, "last");  
+							return;
+    case '2': exportTxt(title + " Mean.txt", "Above", row, col, dataAbv);
+							exportTxt(title + " Mean.txt", "Below", row, col, dataBlw, "0");			  
+							return;
+    case '3': exportHTML(title + " Mean.html", "Above", row, col, dataAbv, "new");
+							exportHTML(title + " Mean.html", "Below", row, col, dataBlw, "last");
+							exportTxt(title + " Mean.txt", "Above", row, col, dataAbv);
+							exportTxt(title + " Mean.txt", "Below", row, col, dataBlw, "0"); 		  			
+							return;
+    case '4': return;
+	}
 }
 
 void showMeanTable(string title, vector<double> id, vector<double> data){
@@ -328,9 +352,31 @@ void showMeanTable(string title, vector<double> id, vector<double> data){
   vector<double> abvID (cmb[0].begin()+n, cmb[0].end());
   vector<double> abvData (cmb[1].begin()+n, cmb[1].end());
 
-  PrintTableByVect("Below", {}, {"ID", title},  transposeV({blwID, blwData}));
-	cout << endl;
   PrintTableByVect("Above", {}, {"ID", title},  transposeV({abvID, abvData}));
+	cout << endl;
+	PrintTableByVect("Below", {}, {"ID", title},  transposeV({blwID, blwData}));
+	cout << endl;
+
+	displayTwoTable(title, {}, {"ID", title}, transposeV({abvID, abvData}), transposeV({blwID, blwData}));
+}
+
+void displayHisto(string title, vector<string> markRange, vector<int> freq, string starUnit, int n, int m){
+
+	cout << "Would you like to :                " << endl << endl;
+	cout << "1. Export to HTML                  " << endl;
+	cout << "2. Export to text file             " << endl;
+	cout << "3. Export to to HTML and text file " << endl;
+	cout << "4. Continue                        " << endl << endl;
+
+	char c = getChoice('1', '4');
+	switch (c)
+	{
+		case '1': histogramHTML( title + "\'s histogram.html", title, markRange, freq, starUnit, m); return;
+		case '2': cout << " create ofstream txt urself lol" << endl ; return;
+		case '3': histogramHTML( title + "\'s histogram.html", title, markRange, freq, starUnit, m);
+							cout << " create ofstream txt urself lol" << endl ; return;
+		case '4': return;
+	}
 }
 
 void histogramMenu(vector<string> title, vector<vector<double>> data){
@@ -342,12 +388,10 @@ void histogramMenu(vector<string> title, vector<vector<double>> data){
 	int m = unitDistribution(freq);
 	string starUnit = unitSize(m);       	  // flexible unit
 
-	plotHistogram(title[n], markRange, freq, starUnit, m);  //<-------- plz debug the PrintTableByVect in order to use this
+	plotHistogram(title[n], markRange, freq, starUnit, m); 
 	cout << endl;
 
-	// displayData if switch change abit
-	// create new function that prints the histogram in txt
-	histogramHTML("TEST histogram.html", title[n], markRange, freq, starUnit, m);
+	displayHisto(title[n], markRange, freq, starUnit, n, m);
 }
 
 void pearsonMenu(vector<string> title, vector<vector<double>> data){
@@ -396,5 +440,5 @@ void LinearRegressionMenu(vector<string> title, vector<vector<double>> data){
 
   //Compute and Return LinearRegression formula
   string lr = linearRegression(selData[0],selData[1]);
-  PrintTableByVect("", {}, {"Linear Regression Line Formula"}, {{}}, {{lr}});
+  PrintTableByVect("", {}, {"Linear Regression Line Formula"}, {{lr}});
 }
