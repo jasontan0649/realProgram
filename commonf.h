@@ -23,7 +23,7 @@ vector<string> vectDoubleString(vector<double>);
 
 //transpose vector
 vector<vector<double>> transposeV(vector<vector<double>>);
-vector<vector<string>> transposeV(vector<vector<string>> vect);
+vector<vector<string>> transposeV(vector<vector<string>>);
 
 //sort by column
 void sortByCol(vector<vector<double>>&, int);

@@ -21,6 +21,7 @@ vector<string> vectDoubleString(vector<double>);
 
 //transpose vector
 vector<vector<double>> transposeV(vector<vector<double>>);
+vector<vector<string>> transposeV(vector<vector<string>>);
 
 //sort by column
 void sortByCol(vector<vector<double>>&, int);
@@ -63,7 +64,7 @@ string toStr(double val, int pre) {
   string str = to_string(val);
   str.erase(str.find_last_not_of('0') + 1);
 
-  if(pre==-1)
+  if(pre == -1)
     if (str.back() == '.') //remove . if integer
       str.pop_back();
 
@@ -108,9 +109,7 @@ int findMaxInVect(vector<string> arr) {
 
 vector<string> vectDoubleString(vector<double> data) {
 	const int size = data.size();
-
-  vector<string> res;
-	res.resize(size);
+  vector<string> res (size);
 
 	for (int i = 0; i < size; i++) 
     res[i] = toStr(data[i]);

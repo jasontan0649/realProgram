@@ -7,37 +7,37 @@
 #include "commonf.h"
 using namespace std;
 
-double sqSum(vector<double>);
-double productSum(vector<double>,vector<double>);
+vector<double> sqVect(vector<double>);
+vector<double> productXY(vector<double>,vector<double>);
 double pearsonCorr(vector<double>,vector<double>);
 double slope(double,vector<double>,vector<double>);
 double y_Intercept(double,vector<double>,vector<double>);
 string linearRegression(vector<double>,vector<double>);
 
 
-double sqSum(vector<double> arr)
+vector<double> sqVect(vector<double> arr)
 {
-	double sum = 0;
+	vector<double> vect;
 	for (int i = 0; i < arr.size(); i++)
 	{
-		sum += pow(arr[i], 2);
+		vect.push_back(pow(arr[i], 2));
 	}
-	return sum;
+	return vect;
 }
 
-double productSum(vector<double> arr1,vector<double> arr2){
-  double sum = 0;
+vector<double> productXY(vector<double> arr1,vector<double> arr2){
+  vector<double> vect;
   for (int i = 0; i < arr1.size() ; i++)
 	{
-		sum += (arr1[i] * arr2[i]);
+		vect.push_back(arr1[i] * arr2[i]);
 	}
-  return sum;
+  return vect;
 }
 
 double pearsonCorr(vector<double> arrY,vector<double> arrX){
   int n = arrY.size();
 
-  return (n * productSum(arrY,arrX) - sum(arrY) * sum(arrX)) / sqrt((n * sqSum(arrY) - sum(arrY) * sum(arrY)) * (n * sqSum(arrX) - sum(arrX) * sum(arrX)));
+  return (n * sum(productXY(arrY,arrX)) - sum(arrY) * sum(arrX)) / sqrt((n * sum(sqVect(arrY)) - sum(arrY) * sum(arrY)) * (n * sum(sqVect(arrX)) - sum(arrX) * sum(arrX)));
 }
 
 //need to ask user to determine which one y which one x
