@@ -8,7 +8,7 @@ using namespace std;
 //algorithm to generate table
 vector<vector<string>> convertDVectToSVect(vector<vector<double>>);
 int findMaxInVect(vector<string>);
-double findMaxBetweenTwoNums(int, double);
+double findMaxBetweenTwoNums(int, int);
 string joinVect(vector<string>, string);
 vector<int> getColMaxLength(vector<string>, vector<vector<string>>);
 vector<string> getHeader(vector<string>, bool, vector<int>, int);

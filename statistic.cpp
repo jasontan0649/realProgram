@@ -82,6 +82,6 @@ double variance(vector<double> arr) {
 }
 
 double sd(vector<double> arr){
-  return sqrt(variance(arr));
+    return sqrt(variance(arr));
 }
 

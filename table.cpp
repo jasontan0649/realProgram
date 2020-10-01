@@ -4,11 +4,12 @@
 #include <fstream>
 
 #include "commonf.h"
+#include "statistic.h"
 using namespace std;
 
 //algorithm to generate table
 vector<vector<string>> convertDVectToSVect(vector<vector<double>>);
-double findMaxBetweenTwoNums(int, double);
+double findMaxBetweenTwoNums(int, int);
 string joinVect(vector<string>, string);
 vector<int> getColMaxLength(vector<string>, vector<vector<string>>);
 vector<string> getHeader(vector<string>, bool, vector<int>, int);
@@ -27,25 +28,17 @@ void printTableData(bool, int, vector<string>, vector<int>, vector<vector<string
 
 //convert DoubleVect To StringVect 
 vector<vector<string>> convertDVectToSVect(vector<vector<double>> data) {
-	const int row = data.size();
-	const int col = data[0].size();
-	vector<vector<string>> res (row, vector<string>(col));
-
-	for (int i = 0; i < row; i++) {
-		for (int j = 0; j < col; j++) {
-			res[i][j] = toStr(data[i][j]);
-		}
-	}
-
+  vector<vector<string>> res;
+  for (auto col : data)
+    res.push_back(vectDoubleString(col));
+		
 	return res;
 }
 
-double findMaxBetweenTwoNums(int a, double b) {
-	int large = a;
+double findMaxBetweenTwoNums(int a, int b) {
 	if (b > a)
-		large = b;
-
-	return large;
+		return  b;
+	return a;
 }
 //****************************************
 
@@ -58,37 +51,29 @@ string joinVect(vector<string> vect, string delimiters) {
 		newStr += vect[i] + delimiters;
 	}
 
-	newStr += vect[vect.size() - 1];
-
-	return newStr;
+	return newStr + vect.back();
 }
 
 vector<int> getColMaxLength(vector<string> colNames, vector<vector<string>> strData) {
 	vector<int> colMaxLen;
-	for (int i = 0; i < colNames.size(); i++) {
+	for (int i = 0; i < colNames.size(); i++)
 		colMaxLen.push_back(colNames[i].size());
-	}
   
-	for (int i = 0; i < strData.size(); i++) {
-		for (int j = 0; j < strData[i].size(); j++) {
-			colMaxLen[j] = findMaxBetweenTwoNums(colMaxLen[j], (strData[i][j]).size());
-		}
-	}
+	for (int i = 0; i < strData.size(); i++)
+		for (int j = 0; j < strData[i].size(); j++)
+			colMaxLen[j] = findMaxBetweenTwoNums(colMaxLen[j], strData[i][j].size());
 
 	return colMaxLen;
 }
 
 vector<string> getHeader(vector<string> colNames, bool noRowNames, vector<int> colMaxLen, int rowMaxLen) {
-
 	vector<string> tableStart;
 	vector<string> colNameStart;
 
-	if (noRowNames) {
+	if (noRowNames)
 		tableStart = {};
-	}
-	else {
+	else
 		tableStart = { strRepeat(" ", rowMaxLen) };
-	}
 
 	for (int i = 0; i < colNames.size(); i++) {
 		string colNamesCenterJustified = center(colMaxLen[i], colNames[i]);
@@ -103,16 +88,13 @@ vector<string> getHeader(vector<string> colNames, bool noRowNames, vector<int> c
 }
 
 string getBorder(vector<string> header) {
-
 	vector<int> headerNameLength;
-	for (int i = 0; i < header.size(); i++) {
+	for (int i = 0; i < header.size(); i++)
 		headerNameLength.push_back(header[i].size());
-	}
 
 	vector<string> colBorder;
-	for (int i = 0; i < headerNameLength.size(); i++) {
+	for (int i = 0; i < headerNameLength.size(); i++)
 		colBorder.push_back(strRepeat("-", headerNameLength[i]));
-	}
 
 	//Join colBorder by "-+-"
 	return joinVect(colBorder, "-+-");
@@ -127,12 +109,11 @@ void exportTxt(string fileName, string title, vector<string> rowNames, vector<st
 void exportTxt(string fileName, string title, vector<string> rowNames, vector<string> colNames, vector<vector<string>> strData, string mode) {
 
 	ofstream dataOut;
-  if(mode=="new")
+  if(mode == "new")
 	  dataOut.open(fileName);
   else
     dataOut.open(fileName, ios_base::app);
   
-
   streambuf *psbuf, *backup;
   backup = cout.rdbuf();
   psbuf = dataOut.rdbuf();

@@ -3,7 +3,6 @@
 #include <sstream>
 #include <fstream>
 #include "commonf.h"
-
 using namespace std;
 
 string loadFile(vector<string>&, vector<vector<double>>&);
@@ -45,7 +44,11 @@ string getFileName() {
 	string file;
 	cout << "Please enter a CSV file name: ";
 	getline(cin, file);
-	return file + ".csv";
+  
+  if(file.find(".") == -1) //if data type not declare
+    file += ".csv";
+
+	return file;
 }
 
 bool getColTitleRow(ifstream& f, int& col, vector<string>& title, int& row) {
@@ -78,9 +81,8 @@ bool getTitleRow(ifstream& f, vector<string>& title) {
 	string val;
 	istringstream titleStream(line);
 	while (getline(titleStream, val, ',')) {
-		if (val.empty()) {
+		if (val.empty()) 
 			return false;
-		}
 		title.push_back(val);
 	}
 

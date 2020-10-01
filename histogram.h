@@ -11,5 +11,6 @@ int unitDistribution(vector<int>);
 string unitSize (int);
 vector<string> outputStar(vector<int>, int);
 void plotHistogram(string, vector<string>, vector<int>, string, int);
+void exportHistoTxt(string, string, vector<string>, vector<int>, string, int);
 
 #endif

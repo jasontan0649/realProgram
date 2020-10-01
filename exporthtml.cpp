@@ -20,7 +20,7 @@ void tdTable(vector<vector<string>>, vector<string>, ofstream&);
 
 void exportHTML(string fileName, string title, vector<string> col, vector<string> th, vector<vector<double>> data, string mode) {
   vector<vector<string>> strData = convertDVectToSVect(data);
-  exportHTML(fileName, title, col, th, data, mode);
+  exportHTML(fileName, title, col, th, strData, mode);
 }
 
 void exportHTML(string fileName, string title, vector<string> col, vector<string> th, vector<vector<string>> strData, string mode) {
@@ -71,14 +71,14 @@ void thTable(vector<string> th, ofstream& dataOut) {
 void tdTable(vector<vector<string>> data, vector<string> col, ofstream& dataOut) {
 	for (int i = 0; i < data.size(); i++) {
 		dataOut << "\t\t<tr>" << endl;
-		//Added for column
+		//Added for col
 		if (!col.empty()) {
-			dataOut << "\t\t\t<th>" << col[i] << "</th>" << endl;
+			dataOut << "\t\t\t<td>" << col[i] << "</td>" << endl;
 		}
-		//Added for column ended
+		//Added for col ended
 		for (int j = 0; j < data[i].size(); j++) {
-			dataOut << "\t\t\t<th style=\"text-align:right;\">";
-			dataOut << data[i][j] << "</th>" << endl;
+			dataOut << "\t\t\t<td style=\"text-align:right;\">";
+			dataOut << data[i][j] << "</td>" << endl;
 		}
 		dataOut << "\t\t</tr>" << endl;
 	}

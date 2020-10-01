@@ -4,7 +4,7 @@
 using namespace std;
 
 bool isNum(string);
-double round(double, int pre);
+double round(double, int pre = 0);
 
 string strRepeat(string, int);
 string toStr(double, int pre=-1); //custom build to string function
@@ -33,46 +33,44 @@ void clrScr();
 //common function
 //to check is a number
 bool isNum(string s) {
-	int dotCount = 0;
-	for (char c : s)
-		if (!isdigit(c) && c != '.')
+	int d = 0; //dot count
+	
+  for (char c : s) //iterate through char of s, return false if not digit or dot
+		if ( (!isdigit(c) && c != '.') || (c=='.' && ++d > 1) )
 			return false;
-		else if (c == '.')
-			dotCount++;
 
-	return dotCount < 2; //check completed
+	return true; //check completed
 }
 
 double round(double val, int pre){
-  int tmp = (val * pow(10,pre) + 0.5);
-  return double(tmp) / pow(10,pre);
+  int tmp = (val * pow(10,pre) + 0.5); // get value of ceiling of val*10^pre
+  return double(tmp) / pow(10,pre); //return the rounded value base on precision
 }
 
 string strRepeat(string s, int n) {
-	string res = "";
+	string res = ""; //create empty string
 
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++) //concatenate string n times
 		res += s;
 
-	return res;
+	return res; //return string
 }
 
-string toStr(double val, int pre) {
-  if(pre!=-1)
+string toStr(double val, int pre) { //number to string
+  if(pre!=-1) //if not default para, round the value
     val = round(val, pre);
 
-  string str = to_string(val);
-  str.erase(str.find_last_not_of('0') + 1);
+  string str = to_string(val); //convert to string
+  str.erase(str.find_last_not_of('0') + 1); //remove trailing 0
 
-  if(pre == -1)
-    if (str.back() == '.') //remove . if integer
-      str.pop_back();
+  if (str.back() == '.') //remove . if whole number
+    str.pop_back();
 
-	return str;
+	return str; //return string val
 }
 
 string spaceNeeded(int val) {
-	return strRepeat(" ", val);
+	return strRepeat(" ", val); //repeat space val times
 }
 
 string center(int val, string str) {
@@ -90,7 +88,6 @@ string ljust(int val, string str) {
 	int spaceAllowed = val - str.size();
 	return spaceNeeded(spaceAllowed) + str;
 }
-
 
 string rjust(int val, string str) {
 	int spaceAllowed = val - str.size();
