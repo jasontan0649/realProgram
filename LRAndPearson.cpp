@@ -26,8 +26,7 @@ void exportPCLRTxt(string,string,vector<string>,vector<string>,vector<vector<str
 vector<double> sqVect(vector<double> arr)
 {
 	vector<double> squares;
-	for (int i = 0; i < arr.size(); i++)
-	{
+	for (int i = 0; i < arr.size(); i++){
 		squares.push_back(pow(arr[i], 2));
 	}
 	return squares;
@@ -36,8 +35,7 @@ vector<double> sqVect(vector<double> arr)
 vector<double> productXY(vector<double> arr1,vector<double> arr2){
   vector<double> products;
   int size = arr1.size();
-  for (int i = 0; i < size; i++)
-	{
+  for (int i = 0; i < size; i++){
 		products.push_back(arr1[i] * arr2[i]);
 	}
   return products;

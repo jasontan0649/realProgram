@@ -15,7 +15,6 @@ vector<string> getHeader(vector<string>, bool, vector<int>, int);
 string getBorder(vector<string>);
 
 
-
 //function to export txt
 void exportTxt(string, string, vector<string>, vector<string>, vector<vector<double>>, string mode = "new");
 void exportTxt(string, string, vector<string>, vector<string>, vector<vector<string>>, string mode = "new");

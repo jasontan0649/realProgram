@@ -25,7 +25,7 @@ void exportHTML(string fileName, string title, vector<string> col, vector<string
 
 void exportHTML(string fileName, string title, vector<string> col, vector<string> th, vector<vector<string>> strData, string mode) {
 	if (!col.empty()) //the col is not empty
-		th.insert(th.begin(), 1, ""); //apend empty item to 1st of vector
+		th.insert(th.begin(), 1, ""); //append empty item to 1st of vector
 
 	ofstream dataOut;
 
@@ -35,11 +35,12 @@ void exportHTML(string fileName, string title, vector<string> col, vector<string
     dataOut.open(fileName, ios_base::app);
 
   if(mode == "once" || mode == "new"){
-    dataOut << "<html>" << endl << endl << "<head>" << endl ;
+    dataOut << "<html>" << endl << endl << "<head>" << endl;
     titleHTML(title, dataOut);
-    dataOut << "<body>" << endl << "</head>" << endl ;
+    dataOut << "</head>" << endl << "<body>" << endl;
   }
-
+	
+	dataOut << "\t<h2>" << title << "</h2>" << endl;
   dataOut << endl;
   tableHTML(th, col, strData, dataOut);
   

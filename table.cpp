@@ -47,9 +47,8 @@ double findMaxBetweenTwoNums(int a, int b) {
 string joinVect(vector<string> vect, string delimiters) {
 	string newStr = "";
 
-	for (int i = 0; i < vect.size() - 1; i++) {
+	for (int i = 0; i < vect.size() - 1; i++)
 		newStr += vect[i] + delimiters;
-	}
 
 	return newStr + vect.back();
 }
