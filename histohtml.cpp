@@ -34,7 +34,7 @@ void cssHistogram(ofstream& dataOut){
 						"\t}"														<< endl << endl;
 }
 
-vector<int> outputWidth(vector<int> count, int size){
+vector<int> outputWidth(vector<int> count, int size){			// divides the the flexible unit for a uniform histogram
 	vector<int> width (10);
 
 	for(int i = 0; i < 10; i++){
@@ -44,17 +44,18 @@ vector<int> outputWidth(vector<int> count, int size){
 	return width;
 }
 
-vector<double> percentWidth(vector<int> count, int size){
+vector<double> percentWidth(vector<int> count, int size){		// changes into percentage so it is readbable by HTML
 	vector<int> width = outputWidth(count, size);
 	vector<double> tmp (10);
 
 	for(int i = 0; i < 10; i++){
-		tmp[i] = (width[i]/20.0)*100;
+		tmp[i] = (width[i]/20.0)*100;			// max only 20 *, each * represent <size> of units 
 	}
 
 	return tmp;
 }
 
+// formats the freq of bars in HTML
 void csshistoBar(vector<string> range, vector<int> freq, vector<string> var, int n, ofstream& dataOut){
 	vector<double> width = percentWidth(freq, n);
 	vector<string> color = {"#4caf50", "#2196f3", "#f44336", "#808080", "#148F77", "#5DADE2","#34495E","#5499C7","#229954 ","#D4AC0D"};
@@ -68,6 +69,7 @@ void csshistoBar(vector<string> range, vector<int> freq, vector<string> var, int
 	
 }
 
+// formats each division in HTML
 void divHistoBar(vector<string> cssClassVar, vector<string> markRange, vector<int> weight, ofstream& dataOut){
 	for(int i = 0; i < 10; i++){
 		dataOut <<"\t<div class=\"container\">" 																										<< endl <<
@@ -79,6 +81,7 @@ void divHistoBar(vector<string> cssClassVar, vector<string> markRange, vector<in
 	}
 }
 
+// head function for the whole body of histogram in HTML 
 void buildHistogram(string title, vector<string> range, vector<int> freq, vector<string> cssClassVar, int n, string starUnit, ofstream& dataOut){
 	dataOut <<"<!DOCTYPE html>"								  << endl <<
 						"<html lang=\"en\">"					  	<< endl <<
@@ -99,9 +102,10 @@ void buildHistogram(string title, vector<string> range, vector<int> freq, vector
 	vector<int> weight = outputWidth(freq, n);
 	divHistoBar(cssClassVar, range, weight, dataOut);
 
-	dataOut << "\t<p># Note that each frequency in the histogram represents " << starUnit <<". </p>" << endl << endl << "</body>" << endl << "</html>" << endl;
+	dataOut << "\t<p># Note that each frequency in the histogram represents " << starUnit <<". </p>" << endl << endl << "</body>" << endl << "</html>" << endl;			// flexible unit in str
 }
 
+// main fucntion for histoHTML
 void histogramHTML(string fileName, string title, vector<string> range, vector<int> freq, string starUnit, int n){
 	ofstream dataOut;   			// output file variable
 	dataOut.open(fileName);		// open file

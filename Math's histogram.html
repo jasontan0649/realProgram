@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<style>
+
+	* {
+		box-sizing: border-box;
+		font-family: Arial;
+	}
+
+	.container {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		width: 100vw;
+		background-color: #ddd;
+	}
+
+	.range {
+		flex-basis: 10%;
+		text-align: center
+	}
+
+	.colorContainer{
+		flex-basis: 90%;
+	}
+
+	.freq {
+		text-align: right;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		color: white;
+	}
+
+	.ones {
+		width: 0%;
+		background-color: #4caf50;
+	}
+	.tens {
+		width: 0%;
+		background-color: #2196f3;
+	}
+	.twentys {
+		width: 0%;
+		background-color: #f44336;
+	}
+	.thirtys {
+		width: 0%;
+		background-color: #808080;
+	}
+	.fortys {
+		width: 0%;
+		background-color: #148F77;
+	}
+	.fiftys {
+		width: 0%;
+		background-color: #5DADE2;
+	}
+	.sixtys {
+		width: 0%;
+		background-color: #34495E;
+	}
+	.seventys {
+		width: 20%;
+		background-color: #5499C7;
+	}
+	.eightys {
+		width: 0%;
+		background-color: #229954 ;
+	}
+	.ninetys {
+		width: 60%;
+		background-color: #D4AC0D;
+	}
+	</style>
+
+	<title>Math</title>
+
+</head>
+<body>
+
+	<h2 style="text-align:center;"> Histogram for Math </h2>
+
+	<div class="container">
+		<p class="range">0 - <10</p>
+		<div class="colorContainer">
+			<div class="freq ones">0</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">10 - <20</p>
+		<div class="colorContainer">
+			<div class="freq tens">0</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">20 - <30</p>
+		<div class="colorContainer">
+			<div class="freq twentys">0</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">30 - <40</p>
+		<div class="colorContainer">
+			<div class="freq thirtys">0</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">40 - <50</p>
+		<div class="colorContainer">
+			<div class="freq fortys">0</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">50 - <60</p>
+		<div class="colorContainer">
+			<div class="freq fiftys">0</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">60 - <70</p>
+		<div class="colorContainer">
+			<div class="freq sixtys">0</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">70 - <80</p>
+		<div class="colorContainer">
+			<div class="freq seventys">4</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">80 - <90</p>
+		<div class="colorContainer">
+			<div class="freq eightys">0</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<p class="range">90 - 100</p>
+		<div class="colorContainer">
+			<div class="freq ninetys">12</div>
+		</div>
+	</div>
+
+	<p># Note that each frequency in the histogram represents 2 units . </p>
+
+</body>
+</html>

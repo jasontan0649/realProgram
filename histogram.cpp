@@ -73,6 +73,7 @@ void plotHistogram(string title, vector<string> markRange, vector<int> freq, str
 	PrintTableByVect(title, {}, {"Range", "Frequency"}, transposeV({markRange, strStar}));
 }
 
+// uses buffer to output text file
 void exportHistoTxt(string fileName, string title, vector<string> markRange, vector<int> freq, string starUnit, int n){
   ofstream dataOut;
   dataOut.open(fileName);

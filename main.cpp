@@ -22,7 +22,7 @@
 //export data and table
 #include "exporthtml.h"
 #include "table.h" //display and output text file
-#include "histoLRAndPearson.h"
+#include "LRAndPearsonHtml.h"
 
 //maths function
 #include "statistic.h"
@@ -73,8 +73,8 @@ void displayHisto(string, vector<string>, vector<int>, string, int);
 
 //data above and below mean
 void abvBlwMean(vector<string>, vector<double>, vector<vector<double>>);
-void showMeanTable(string, double, vector<vector<double>>, vector<double>, vector<double>, vector<double>, vector<double>);
-void displayTwoTable(string, vector<string>, vector<string>, vector<vector<double>>, vector<vector<double>>);
+void showMeanTable(string, double, vector<vector<double>>, vector<double>, vector<double> , vector<double>, vector<double>); 
+void displayTwoTable(string, double, vector<vector<double>>, vector<double>, vector<double> , vector<double>, vector<double>); 
 
 //Pearson correlation //LR
 void pearsonAndLRMenu(vector<string>, vector<double>, vector<vector<double>>);
@@ -278,17 +278,13 @@ void displayData(string title, vector<string> row, vector<string> col, vector<ve
 	PrintTableByVect(title, row, col, data); //display data
 	cout << endl;
 
-	char c = outputOptions();
-	switch (c) {
-    case '1': exportHTML(title + ".html", title, row, col, data); return;
-    case '2': exportTxt(title + ".txt", title, row, col, data); return;
-    case '3': exportHTML(title + ".html", title, row, col, data);
-              exportTxt(title + ".txt", title, row, col, data); return;
-    case '4': return;
-	}
+  exportHTML(title + ".html", title, row, col, data);
+  exportTxt(title + ".txt", title, row, col, data);
+
+  cout << "Data has been exported. Please press any key to continue" << endl;
+  _getch();
 }
 
-// still building==============================================
 // AboveBelow Mean Calculation function ============================
 void abvBlwMean(vector<string> title, vector<double> id, vector<vector<double>> data) {
 	cout << "Data Above and Below Mean " << endl;
@@ -302,73 +298,68 @@ void abvBlwMean(vector<string> title, vector<double> id, vector<vector<double>> 
 	int n = -1; //index to iterate
   while(cmb[1][++n] < meanRes); //find boundary
 
-	vector<double> blwID(cmb[0].begin(), cmb[0].begin() + n);
-	vector<double> blwData(cmb[1].begin(), cmb[1].begin() + n);
+	vector<double> blwID(cmb[0].begin(), cmb[0].begin() + n);		// extract the ID above & below boundary to new vectors
+	vector<double> blwData(cmb[1].begin(), cmb[1].begin() + n);	// same with data (marks)
 	vector<double> abvID(cmb[0].begin() + n, cmb[0].end());
 	vector<double> abvData(cmb[1].begin() + n, cmb[1].end());
 
 	showMeanTable(title[choice], meanRes, cmb, blwID, blwData, abvID, abvData);
+  displayTwoTable(title[choice], meanRes, cmb, blwID, blwData, abvID, abvData);
 }
 // ================================================================
 
-void showMeanTable(string title, double meanRes, vector<vector<double>> cmb, vector<double> blwID, vector<double> blwData, vector<double> abvID, vector<double> abvData) {
+void showMeanTable(string title, double meanRes, vector<vector<double>> cmb, vector<double> blwID, vector<double> blwData, vector<double> abvID, vector<double> abvData) {		// show 2 tables, above & below mean in prompt
 	cout << endl << "The mean is " << meanRes << endl << endl;
 
 	PrintTableByVect("Above", {}, { "ID", title }, transposeV({ abvID, abvData }));
 	cout << endl;
 	PrintTableByVect("Below", {}, { "ID", title }, transposeV({ blwID, blwData }));
 	cout << endl;
-
-	displayTwoTable(title, {}, { "ID", title }, transposeV({ abvID, abvData }), transposeV({ blwID, blwData }));
 }
 
-void displayTwoTable(string title, vector<string> row, vector<string> col, vector<vector<double>> dataAbv, vector<vector<double>> dataBlw) {
-	
-	char c = outputOptions();
-	switch (c)
-	{
-	case '1': exportHTML(title + " Mean.html", "Above", row, col, dataAbv, "new");
-		exportHTML(title + " Mean.html", "Below", row, col, dataBlw, "last");
-		return;
-	case '2': exportTxt(title + " Mean.txt", "Above", row, col, dataAbv);
-		exportTxt(title + " Mean.txt", "Below", row, col, dataBlw, "pos");
-		return;
-	case '3': exportHTML(title + " Mean.html", "Above", row, col, dataAbv, "new");
-		exportHTML(title + " Mean.html", "Below", row, col, dataBlw, "last");
-		exportTxt(title + " Mean.txt", "Above", row, col, dataAbv);
-		exportTxt(title + " Mean.txt", "Below", row, col, dataBlw, "pos");
-		return;
-	case '4': return;
-	}
+void displayTwoTable(string title, double meanRes, vector<vector<double>> cmb, vector<double> blwID, vector<double> blwData, vector<double> abvID, vector<double> abvData){			// made just for mean, as it requires 2 tables
+	// output the 2 tables in HTML (using the extra mode parameter)
+	exportHTML(title + " Mean.html", title + " Above mean", {}, { "ID", title }, transposeV({ abvID, abvData }), "The mean is " + toStr(meanRes), "new");
+	exportHTML(title + " Mean.html", title + " Below Mean", {}, { "ID", title }, transposeV({ blwID, blwData }), "", "last");
+
+	ofstream dataOut;		// from here below, output in .txt
+	dataOut.open(title + " Mean.txt"); 	//cout title
+  dataOut << title << " mean" << endl;
+
+  streambuf *psbuf, *backup;		// use buffer to output 2tables in .txt
+  backup = cout.rdbuf();
+  psbuf = dataOut.rdbuf();
+  cout.rdbuf(psbuf);
+
+  showMeanTable(title, meanRes, cmb, blwID, blwData, abvID, abvData);
+
+  cout.rdbuf(backup);
+	cout << "Data has been exported. Please press any key to continue" << endl;
+  _getch();
 }
 
-void displayHisto(string title, vector<string> markRange, vector<int> freq, string starUnit, int n) {
+void displayHisto(string title, vector<string> markRange, vector<int> freq, string starUnit, int n) {		// output histogram table
 
-	char c = outputOptions();
-	switch (c)
-	{
-	case '1': histogramHTML(title + "\'s histogram.html", title, markRange, freq, starUnit, n);             return;
-	case '2': exportHistoTxt(title + "\'s histogram.txt", title, markRange, freq, starUnit, n);             return;
-	case '3': histogramHTML(title + "\'s histogram.html", title, markRange, freq, starUnit, n);
-						exportHistoTxt(title + "\'s histogram.txt", title, markRange, freq, starUnit, n); 
-            return;
-	case '4': return;
-	}
+	histogramHTML(title + "\'s histogram.html", title, markRange, freq, starUnit, n);
+	exportHistoTxt(title + "\'s histogram.txt", title, markRange, freq, starUnit, n); 
+							
+	cout << "Data has been exported. Please press any key to continue" << endl;
+	_getch();
 }
 
-void histogramMenu(vector<string> title, vector<vector<double>> data) {
+void histogramMenu(vector<string> title, vector<vector<double>> data) {	
 	cout << "Generate Histogram" << endl;
 
 	int choice = selVector(title);
 	vector<string> markRange = { "0 - <10", "10 - <20", "20 - <30", "30 - <40", "40 - <50", "50 - <60", "60 - <70", "70 - <80", "80 - <90", "90 - 100" };
 	vector<int> freq = calcMarksRange({ data[choice] });
-	int n = unitDistribution(freq);
-	string starUnit = unitSize(n);       	  // flexible unit
+	int n = unitDistribution(freq);					// flexible unit
+	string starUnit = unitSize(n);       	  // flexible unit in string
 
-	plotHistogram(title[choice], markRange, freq, starUnit, n);
+	plotHistogram(title[choice], markRange, freq, starUnit, n);			// prompt
 	cout << endl;
 
-	displayHisto(title[choice], markRange, freq, starUnit, n);
+	displayHisto(title[choice], markRange, freq, starUnit, n);			//HTML and txt
 }
 
 
@@ -379,9 +370,11 @@ void pearsonAndLRMenu(vector<string> title, vector<double> id, vector<vector<dou
 	vector<vector<double>> selData;
   PCLRPrompt(title,data, selTitle,selData);
   //Declare arguments
-	double r = pearsonCorr(selData[1], selData[0]);
-  double m = slope(r,selData[1], selData[0]);
-  double b = y_Intercept(m,selData[1], selData[0]);
+  vector<double> dataX = selData[0];
+  vector<double> dataY = selData[1];
+	double r = pearsonCorr(dataY, dataX);
+  double m = slope(r,dataY, dataX);
+  double b = y_Intercept(m,dataY, dataX);
   string mainTitle = selTitle[0] + "(X)" + " vs " + selTitle[1] + "(Y)";
 	vector <string> rowName(id.size() + 1, "");
 	rowName.back() = "Total";
@@ -389,26 +382,28 @@ void pearsonAndLRMenu(vector<string> title, vector<double> id, vector<vector<dou
 	vector<vector<string>> strVect = getPCLRData(id,selData);
   //Display Table
   displayPCLROutput(mainTitle,rowName,colName,strVect,selData,r,m,b);
-	char c = outputOptions();
-  switch (c)
-	{
-	case '1': exportPCLRHtml(mainTitle+ "\'s PearsonCorr&LinearRegre.html",mainTitle,rowName,colName, strVect,selData[1], selData[0], r, m, b,"once");
-  return;
-	case '2': exportPCLRTxt(mainTitle+ "\'s PearsonCorr&LinearRegre.txt",mainTitle,rowName, colName, strVect,selData[1], selData[0], r, m, b,"new");      return;
-  case '3': exportPCLRHtml(mainTitle+ "\'s PearsonCorr&LinearRegre.html",mainTitle,rowName, colName, strVect,selData[1], selData[0], r, m, b,"once");
-						exportPCLRTxt(mainTitle+ "\'s PearsonCorr&LinearRegre.txt",mainTitle,rowName, colName, strVect,selData[1], selData[0], r, m, b,"new");
-            return;
-	case '4': return;
-	}
+	
+	exportPCLRHtml(mainTitle+ "\'s PearsonCorr&LinearRegre.html",mainTitle,rowName, colName, strVect,dataY, dataX, r, m, b);
+	exportPCLRTxt(mainTitle+ "\'s PearsonCorr&LinearRegre.txt",mainTitle,rowName, colName, strVect,dataY, dataX, r, m, b);
+
+	cout << "Data has been exported. Please press any key to continue" << endl;
+  _getch();
 }
 
 vector<vector<string>> getPCLRData(vector<double> id,vector<vector<double>> selData){
   // Append data into 2d vector and then transpose it to be able to display properly
-  vector<vector<double>> finalData = transposeV({ id,selData[0],selData[1],productXY(selData[0],selData[1]),sqVect(selData[0]),sqVect(selData[1])});
-
-	finalData.push_back({ sum(selData[0]),sum(selData[1]),sum(productXY(selData[0],selData[1])),sum(sqVect(selData[0])),sum(sqVect(selData[1])) });
+  vector<double> dataX = selData[0];
+  vector<double> dataY = selData[1];
+  vector<double> realProductXY = productXY(dataX,dataY);
+  vector<double> sqVectX = sqVect(dataX);
+  vector<double> sqVectY = sqVect(dataY);
+  
+  vector<vector<double>> finalData = transposeV({ id,dataX,dataY,realProductXY,sqVectX,sqVectY});
+  // Append the data at last row 
+	finalData.push_back({ sum(dataX),sum(dataY),sum(realProductXY),sum(sqVectX),sum(sqVectY) });
 
 	vector<vector<string>> strVect = convertDVectToSVect(finalData);
+  //Insert blank space
 	strVect.back().insert(strVect.back().begin(), "");
   
   strVect.back().resize(6);

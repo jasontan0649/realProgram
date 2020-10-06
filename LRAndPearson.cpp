@@ -20,7 +20,7 @@ void printComputationOfPC(vector<double>,vector<double>, double);
 void printComputationOfLR(vector<double>,vector<double>,double,double,double);
 
 //Export into txt file
-void exportPCLRTxt(string,string,vector<string>,vector<string>,vector<vector<string>>,vector<double>,vector<double>,double,double,double,string mode="new");
+void exportPCLRTxt(string,string,vector<string>,vector<string>,vector<vector<string>>,vector<double>,vector<double>,double,double,double);
 
 
 vector<double> sqVect(vector<double> arr)
@@ -43,10 +43,12 @@ vector<double> productXY(vector<double> arr1,vector<double> arr2){
 
 double pearsonCorr(vector<double> arrY,vector<double>  arrX){
   int numOfData = arrY.size();
+  double sumArrY = sum(arrY);
+  double sumArrX = sum(arrX);
 
-  double numerator = numOfData * sum(productXY(arrY,arrX)) - sum(arrY) * sum(arrX);
-  double denoY = numOfData * sum(sqVect(arrY)) - sum(arrY) * sum(arrY);
-  double denoX = numOfData * sum(sqVect(arrX)) - sum(arrX) * sum(arrX);
+  double numerator = numOfData * sum(productXY(arrY,arrX)) - sumArrY * sumArrX;
+  double denoY = numOfData * sum(sqVect(arrY)) - sumArrY * sumArrY;
+  double denoX = numOfData * sum(sqVect(arrX)) - sumArrX * sumArrX;
   return (numerator) / sqrt(denoY * denoX);
 }
 
@@ -71,9 +73,11 @@ string linearRegression(vector<double> arrY,vector<double> arrX,double r, double
 //Display Calculation On console
 void printComputationOfPC(vector<double> arrY,vector<double>  arrX,double r){
   int numOfData = arrY.size();
+  double sumArrY = sum(arrY);
+  double sumArrX = sum(arrX);
   
   cout << "1. Pearson’s Correlation" << endl << endl;
-  cout << "   r = (" << numOfData << "*" <<sum(productXY(arrY,arrX)) << " - " << sum(arrY) << "*" << sum(arrX) << ")/ sqrt((" << numOfData << "*" << sum(sqVect(arrY)) << " - " << sum(arrY) << "*" << sum(arrY) << ") * (" << numOfData << "*" << sum(sqVect(arrX))<<  " - " << sum(arrX) << "*" << sum(arrX) << "))" << endl;
+  cout << "   r = (" << numOfData << "*" <<sum(productXY(arrY,arrX)) << " - " << sumArrY << "*" << sumArrX << ")/ sqrt((" << numOfData << "*" << sum(sqVect(arrY)) << " - " << sumArrY << "*" << sumArrY << ") * (" << numOfData << "*" << sum(sqVect(arrX))<<  " - " << sumArrX << "*" << sumArrX << "))" << endl;
   cout << "     = " << toStr(r,2) << endl << endl;
    
 }
@@ -88,7 +92,7 @@ void printComputationOfLR(vector<double> arrY,vector<double>  arrX, double r, do
 }
 
 //Export into txt file and html file
-void exportPCLRTxt(string fileName, string title, vector<string> rowNames, vector<string> colNames, vector<vector<string>> strData,vector<double> arrY,vector<double> arrX, double r, double m, double b,string mode){
+void exportPCLRTxt(string fileName, string title, vector<string> rowNames, vector<string> colNames, vector<vector<string>> strData,vector<double> arrY,vector<double> arrX, double r, double m, double b){
   ofstream dataOut;
 	
   dataOut.open(fileName);
